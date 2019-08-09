@@ -8,6 +8,7 @@ import android.util.Log
 import com.example.movielist.R
 import com.example.movielist.model.Data
 import com.example.movielist.ui.MovieListActivity.Companion.INT_KEY
+import com.example.movielist.ui.MovieListActivity.Companion.STRING_KEY
 import com.example.movielist.ui.MovieListActivity.Companion.STRING_KEY2
 import kotlinx.android.synthetic.main.activity_edit_movie.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -22,32 +23,28 @@ class EditMovieActivity : AppCompatActivity() {
 
 
         button_go_back.setOnClickListener {
-            var movieName = edit_text.text.toString()
-            var intent = Intent(this, MovieListActivity::class.java)
 //            intent.putExtra(MovieListActivity.STRING_KEY, movieName)
 //            setResult(Activity.RESULT_OK, intent)
 
-            var extras = Bundle()
-            if (extras.getString(STRING_KEY2) != null) {
-                var textViewID = extras.getInt(INT_KEY)
-                var oldMoveName = extras.getString(STRING_KEY2)
+
+            if (intent.getStringExtra(STRING_KEY2) != null) {
+                var textViewID: Int = intent.getIntExtra(STRING_KEY, 11)
+                var oldMoveName: String = intent.getStringExtra(STRING_KEY2) ?: "NoData"
                 edit_text.hint = oldMoveName
-
-                extras.putString(STRING_KEY2, movieName)
-                extras.putInt(INT_KEY, textViewID)
-                intent.putExtras(extras)
-            } else {
-                intent.putExtra(MovieListActivity.STRING_KEY, movieName)
+                var intent = Intent(this, MovieListActivity::class.java)
+                intent.putExtra(STRING_KEY, textViewID)
+                intent.putExtra(STRING_KEY2, oldMoveName)
                 setResult(Activity.RESULT_OK, intent)
+
+                Log.i("FindMe", "Found 1")
+            } else {
+                var movieName = edit_text.text.toString()
+                var intent = Intent(this, MovieListActivity::class.java)
+                intent.putExtra(STRING_KEY, movieName)
+                setResult(Activity.RESULT_OK, intent)
+                Log.i("FindMe", "Found 2")
             }
-
-
             finish()
         }
     }
 }
-
-//var extras = Bundle()
-//extras.putString(STRING_KEY, movie.id)
-//extras.putInt(INT_KEY, movie.id)
-//intent.putExtras(extras)

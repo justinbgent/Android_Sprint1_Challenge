@@ -35,11 +35,8 @@ class MovieListActivity : AppCompatActivity() {
 
             movie.setOnClickListener {
                 var intent = Intent(this, EditMovieActivity::class.java)
-                //intent.putExtra(EDIT_TEXT_KEY, movie.id)
-                //intent.putExtra(EDIT_TEXT_KEY, movieString
-                var extras = Bundle()
-                extras.putString(STRING_KEY, text)
-                extras.putInt(INT_KEY, movie.id)
+                intent.putExtra(STRING_KEY, movie.id)
+                intent.putExtra(STRING_KEY2, text)
                 //movieList.removeAt(movie.id)
                 //ll_parent.removeView(movie)
                 startActivityForResult(intent, EDIT_TEXT_KEY)
@@ -64,18 +61,12 @@ class MovieListActivity : AppCompatActivity() {
             ll_parent.addView(addToList(movieList[counter].movieTitle, counter++))
         }
         if(requestCode == EDIT_TEXT_KEY && resultCode == Activity.RESULT_OK){
-            var dataReceived: String = data!!.getStringExtra(STRING_KEY2)
-            //movieList.add(Data(dataReceived))
-            //ll_parent.addView(addToList(movieList[movieList.size - 1].movieTitle, counter++))
-
-            var extras = Bundle()
-            var editedMovieText = extras.getString(STRING_KEY2)
-            var textViewID = extras.getInt(INT_KEY)
-            movieList[textViewID] = Data(dataReceived)
-
-            
+            var dataStringReceived: String = data!!.getStringExtra(STRING_KEY2)
+            var dataIntReceived: Int = data.getIntExtra(STRING_KEY, 11)
+            movieList[dataIntReceived] = Data(dataStringReceived)
+            findViewById<TextView>(dataIntReceived).text = dataStringReceived
         }
-        super.onActivityResult(requestCode, resultCode, data)
+        //super.onActivityResult(requestCode, resultCode, data)
     }
 }
 
