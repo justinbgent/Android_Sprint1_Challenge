@@ -1,5 +1,6 @@
 package com.example.movielist.ui
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,25 +11,27 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MovieListActivity : AppCompatActivity() {
 
-    companion object{
-        const val  STRING_KEY = "STRING_KEY"
+    companion object {
+        const val STRING_KEY = "STRING_KEY"
+        const val TITLE_REQUEST_KEY = 3
         var counter = 0
     }
 
-    fun addMovie(text: String, id: Int): TextView{
-        var movie = TextView(this)
-        movie.text = text
-        movie.textSize = 16f
-        movie.id = id
-        movie.height = 80
-        movie.width = ViewGroup.LayoutParams.MATCH_PARENT
+        public fun addText(text: String, id: Int): TextView {
+            var movie = TextView(this)
+            movie.text = text
+            movie.textSize = 16f
+            movie.id = id
+            movie.height = 80
+            movie.width = ViewGroup.LayoutParams.MATCH_PARENT
 
-        movie.setOnClickListener{
-            var intent = Intent(this, EditMovieActivity::class.java)
-            intent.putExtra(STRING_KEY, text)
+            movie.setOnClickListener {
+                var intent = Intent(this, EditMovieActivity::class.java)
+                intent.putExtra(STRING_KEY, text)
+                startActivity(intent)
+            }
+            return movie
         }
-        return movie
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,15 +39,13 @@ class MovieListActivity : AppCompatActivity() {
 
         button_add_movie.setOnClickListener {
             var intent = Intent(this, EditMovieActivity::class.java)
-            startActivity(intent)
+            startActivityForResult(intent, TITLE_REQUEST_KEY)
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        val stringData: String = intent.getStringExtra(STRING_KEY) ?:"No Data"
-        if(!stringData.equals("No Data")){
-            addMovie(stringData, counter++)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(requestCode == TITLE_REQUEST_KEY && resultCode == Activity.RESULT_OK){
+            ll_parent.addView(addText("asdgfas", counter++))
         }
     }
 }

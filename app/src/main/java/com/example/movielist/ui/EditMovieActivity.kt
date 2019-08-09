@@ -1,11 +1,14 @@
 package com.example.movielist.ui
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import com.example.movielist.R
 import com.example.movielist.model.Data
 import kotlinx.android.synthetic.main.activity_edit_movie.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class EditMovieActivity : AppCompatActivity() {
 
@@ -21,8 +24,8 @@ class EditMovieActivity : AppCompatActivity() {
             var intent = Intent(this, MovieListActivity::class.java)
             intent.putExtra(MovieListActivity.STRING_KEY, movieName)
             movieList.add(Data(movieName))
-
-            startActivity(intent)
+            setResult(Activity.RESULT_OK, intent)
+            finish()
         }
     }
 }
