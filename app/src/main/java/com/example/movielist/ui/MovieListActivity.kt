@@ -7,9 +7,12 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.TextView
 import com.example.movielist.R
+import com.example.movielist.model.Data
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MovieListActivity : AppCompatActivity() {
+
+    var movieList: ArrayList<Data> = ArrayList()
 
     companion object {
         const val STRING_KEY = "STRING_KEY"
@@ -18,6 +21,7 @@ class MovieListActivity : AppCompatActivity() {
     }
 
         public fun addText(text: String, id: Int): TextView {
+            movieList.add(id, Data(text))
             var movie = TextView(this)
             movie.text = text
             movie.textSize = 16f
@@ -27,7 +31,8 @@ class MovieListActivity : AppCompatActivity() {
 
             movie.setOnClickListener {
                 var intent = Intent(this, EditMovieActivity::class.java)
-                intent.putExtra(STRING_KEY, text)
+                intent.putExtra(STRING_KEY, movieList[movie.id])
+                movieList.removeAt(movie.id)
                 startActivity(intent)
             }
             return movie

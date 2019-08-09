@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class EditMovieActivity : AppCompatActivity() {
 
-    var movieList: ArrayList<Data> = ArrayList()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,6 @@ class EditMovieActivity : AppCompatActivity() {
             var movieName = edit_text.text.toString()
             var intent = Intent(this, MovieListActivity::class.java)
             intent.putExtra(MovieListActivity.STRING_KEY, movieName)
-            movieList.add(Data(movieName))
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
