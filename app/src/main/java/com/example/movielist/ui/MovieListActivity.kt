@@ -4,7 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.movielist.R
 import com.example.movielist.model.Data
@@ -12,16 +14,18 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 class MovieListActivity : AppCompatActivity() {
 
-    var movieList: ArrayList<Data> = ArrayList()
+    var movieList = mutableListOf<Data>()
 
     companion object {
         const val STRING_KEY = "STRING_KEY"
+        const val STRING_KEY2 = "STRING_KEY2"
+        const val INT_KEY = "RETRIEVE INT"
         const val TITLE_REQUEST_KEY = 3
+        const val EDIT_TEXT_KEY = 1
         var counter = 0
     }
 
-        public fun addText(text: String, id: Int): TextView {
-            movieList.add(id, Data(text))
+        fun addToList(text: String, id: Int): TextView {
             var movie = TextView(this)
             movie.text = text
             movie.textSize = 16f
@@ -31,9 +35,14 @@ class MovieListActivity : AppCompatActivity() {
 
             movie.setOnClickListener {
                 var intent = Intent(this, EditMovieActivity::class.java)
-                intent.putExtra(STRING_KEY, movieList[movie.id])
-                movieList.removeAt(movie.id)
-                startActivity(intent)
+                //intent.putExtra(EDIT_TEXT_KEY, movie.id)
+                //intent.putExtra(EDIT_TEXT_KEY, movieString
+                var extras = Bundle()
+                extras.putString(STRING_KEY, text)
+                extras.putInt(INT_KEY, movie.id)
+                //movieList.removeAt(movie.id)
+                //ll_parent.removeView(movie)
+                startActivityForResult(intent, EDIT_TEXT_KEY)
             }
             return movie
         }
@@ -50,8 +59,23 @@ class MovieListActivity : AppCompatActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(requestCode == TITLE_REQUEST_KEY && resultCode == Activity.RESULT_OK){
-            ll_parent.addView(addText("asdgfas", counter++))
+            var dataReceived: String = data!!.getStringExtra(STRING_KEY)
+            movieList.add(counter, Data(dataReceived))
+            ll_parent.addView(addToList(movieList[counter].movieTitle, counter++))
         }
+        if(requestCode == EDIT_TEXT_KEY && resultCode == Activity.RESULT_OK){
+            var dataReceived: String = data!!.getStringExtra(STRING_KEY2)
+            //movieList.add(Data(dataReceived))
+            //ll_parent.addView(addToList(movieList[movieList.size - 1].movieTitle, counter++))
+
+            var extras = Bundle()
+            var editedMovieText = extras.getString(STRING_KEY2)
+            var textViewID = extras.getInt(INT_KEY)
+            movieList[textViewID] = Data(dataReceived)
+
+            
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }
 
