@@ -7,16 +7,15 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import com.example.movielist.R
-import com.example.movielist.model.Values
 import com.example.movielist.model.Values.Companion.INT_KEY
 import com.example.movielist.model.Values.Companion.INT_TO_DEFAULT
 import com.example.movielist.model.Values.Companion.STRING_KEY
 import com.example.movielist.model.Values.Companion.STRING_KEY2
+import com.example.movielist.model.Values.Companion.isFlagged
+import com.example.movielist.model.Values.Companion.watched
 import kotlinx.android.synthetic.main.activity_edit_movie.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class EditMovieActivity : AppCompatActivity() {
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +39,7 @@ class EditMovieActivity : AppCompatActivity() {
                 var movieName = edit_text.text.toString()
                 var intent = Intent(this, MovieListActivity::class.java)
                 intent.putExtra(STRING_KEY, movieName)
+                intent.putExtra(INT_KEY, textViewID)
                 setResult(Activity.RESULT_OK, intent)
                 Log.i("FindMe", "Found 2")
             }
@@ -50,9 +50,13 @@ class EditMovieActivity : AppCompatActivity() {
             Log.i("FindMe", "Found button")
             var intent = Intent(this, MovieListActivity::class.java)
             intent.putExtra(INT_KEY, textViewID)
-            //intent.removeExtra(STRING_KEY2)
             setResult(Activity.RESULT_OK, intent)
             finish()
         }
+
+        toggle_watched.setOnCheckedChangeListener { _, isChecked ->
+            watched = isChecked
+        }
+
     }
 }
