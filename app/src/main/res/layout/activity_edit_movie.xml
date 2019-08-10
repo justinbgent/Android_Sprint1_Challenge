@@ -21,9 +21,9 @@
     />
 
     <ToggleButton
+            android:id="@+id/toggle_watched"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Watched"
     />
 
 </LinearLayout>
@@ -40,9 +40,9 @@
                 android:layout_height="wrap_content"/>
 
         <Button
-                android:id="@+id/button_delete"
+                android:id="@+id/button_remove"
                 android:layout_weight="1"
-                android:text="Delete"
+                android:text="Remove"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

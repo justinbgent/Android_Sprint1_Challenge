@@ -1,5 +1,6 @@
 package com.example.movielist.model
 
+import android.widget.TextView
 import java.io.Serializable
 
 class Values {

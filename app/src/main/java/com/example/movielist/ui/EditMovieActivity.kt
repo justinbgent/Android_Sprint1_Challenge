@@ -7,11 +7,13 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import com.example.movielist.R
+import com.example.movielist.model.Values
 import com.example.movielist.model.Values.Companion.INT_KEY
 import com.example.movielist.model.Values.Companion.INT_TO_DEFAULT
 import com.example.movielist.model.Values.Companion.STRING_KEY
 import com.example.movielist.model.Values.Companion.STRING_KEY2
 import kotlinx.android.synthetic.main.activity_edit_movie.*
+import kotlinx.android.synthetic.main.activity_main.*
 
 class EditMovieActivity : AppCompatActivity() {
 
@@ -20,6 +22,7 @@ class EditMovieActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_movie)
         var oldMovieName: String? = intent.getStringExtra(STRING_KEY2)
+        var textViewID: Int = intent.getIntExtra(INT_KEY, INT_TO_DEFAULT)
 
         if (oldMovieName != null) {
             edit_text.setText(oldMovieName, TextView.BufferType.EDITABLE)
@@ -28,7 +31,6 @@ class EditMovieActivity : AppCompatActivity() {
         button_save.setOnClickListener {
 
             if (oldMovieName != null) {
-                var textViewID: Int = intent.getIntExtra(INT_KEY, INT_TO_DEFAULT)
                 var intent = Intent(this, MovieListActivity::class.java)
                 intent.putExtra(INT_KEY, textViewID)
                 intent.putExtra(STRING_KEY2, edit_text.text.toString())
@@ -41,6 +43,15 @@ class EditMovieActivity : AppCompatActivity() {
                 setResult(Activity.RESULT_OK, intent)
                 Log.i("FindMe", "Found 2")
             }
+            finish()
+        }
+
+        button_remove.setOnClickListener {
+            Log.i("FindMe", "Found button")
+            var intent = Intent(this, MovieListActivity::class.java)
+            intent.putExtra(INT_KEY, textViewID)
+            //intent.removeExtra(STRING_KEY2)
+            setResult(Activity.RESULT_OK, intent)
             finish()
         }
     }
