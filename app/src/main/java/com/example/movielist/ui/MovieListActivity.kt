@@ -6,24 +6,26 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.movielist.R
 import com.example.movielist.model.Data
 import kotlinx.android.synthetic.main.activity_main.*
+import android.graphics.Paint
+import com.example.movielist.model.Values.Companion.EDIT_TEXT_KEY
+import com.example.movielist.model.Values.Companion.INT_KEY
+import com.example.movielist.model.Values.Companion.INT_TO_DEFAULT
+import com.example.movielist.model.Values.Companion.STRING_KEY
+import com.example.movielist.model.Values.Companion.STRING_KEY2
+import com.example.movielist.model.Values.Companion.TITLE_REQUEST_KEY
+import com.example.movielist.model.Values.Companion.movieList
+
 
 class MovieListActivity : AppCompatActivity() {
 
-    var movieList = mutableListOf<Data>()
 
-    companion object {
-        const val STRING_KEY = "STRING_KEY"
-        const val STRING_KEY2 = "STRING_KEY2"
-        const val INT_KEY = "RETRIEVE INT"
-        const val TITLE_REQUEST_KEY = 3
-        const val EDIT_TEXT_KEY = 1
-        var counter = 0
-    }
+    private var counter = 0
+
+
 
         fun addToList(text: String, id: Int): TextView {
             var movie = TextView(this)
@@ -33,10 +35,12 @@ class MovieListActivity : AppCompatActivity() {
             movie.height = 80
             movie.width = ViewGroup.LayoutParams.MATCH_PARENT
 
+            movie.setPaintFlags(movie.getPaintFlags() or Paint.STRIKE_THRU_TEXT_FLAG)
+
             movie.setOnClickListener {
                 var intent = Intent(this, EditMovieActivity::class.java)
-                intent.putExtra(STRING_KEY, movie.id)
-                intent.putExtra(STRING_KEY2, text)
+                intent.putExtra(INT_KEY, movie.id)
+                intent.putExtra(STRING_KEY2, movieList[id].movie)
                 //movieList.removeAt(movie.id)
                 //ll_parent.removeView(movie)
                 startActivityForResult(intent, EDIT_TEXT_KEY)
@@ -58,15 +62,24 @@ class MovieListActivity : AppCompatActivity() {
         if(requestCode == TITLE_REQUEST_KEY && resultCode == Activity.RESULT_OK){
             var dataReceived: String = data!!.getStringExtra(STRING_KEY)
             movieList.add(counter, Data(dataReceived))
-            ll_parent.addView(addToList(movieList[counter].movieTitle, counter++))
+            ll_parent.addView(addToList(movieList[counter].movie, counter++))
         }
         if(requestCode == EDIT_TEXT_KEY && resultCode == Activity.RESULT_OK){
-            var dataStringReceived: String = data!!.getStringExtra(STRING_KEY2)
-            var dataIntReceived: Int = data.getIntExtra(STRING_KEY, 11)
-            movieList[dataIntReceived] = Data(dataStringReceived)
-            findViewById<TextView>(dataIntReceived).text = dataStringReceived
+            var intData: Int = data!!.getIntExtra(INT_KEY, INT_TO_DEFAULT)
+            var textViewID = findViewById<TextView>(intData)
+            var stringData: String = data!!.getStringExtra(STRING_KEY2)
+
+            if (stringData != null){
+                movieList[intData] = Data(stringData)
+                textViewID.text = movieList[intData].movie
+                Log.i("FindMe", "Found $intData")
+                Log.i("FindMe", "Found $stringData")
+            }
+            if(intData != INT_TO_DEFAULT && stringData == null){
+                movieList.removeAt(intData)
+                ll_parent.removeView(textViewID)
+            }
         }
-        //super.onActivityResult(requestCode, resultCode, data)
     }
 }
 

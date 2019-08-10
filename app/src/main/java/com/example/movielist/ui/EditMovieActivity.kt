@@ -5,13 +5,13 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
 import com.example.movielist.R
-import com.example.movielist.model.Data
-import com.example.movielist.ui.MovieListActivity.Companion.INT_KEY
-import com.example.movielist.ui.MovieListActivity.Companion.STRING_KEY
-import com.example.movielist.ui.MovieListActivity.Companion.STRING_KEY2
+import com.example.movielist.model.Values.Companion.INT_KEY
+import com.example.movielist.model.Values.Companion.INT_TO_DEFAULT
+import com.example.movielist.model.Values.Companion.STRING_KEY
+import com.example.movielist.model.Values.Companion.STRING_KEY2
 import kotlinx.android.synthetic.main.activity_edit_movie.*
-import kotlinx.android.synthetic.main.activity_main.*
 
 class EditMovieActivity : AppCompatActivity() {
 
@@ -19,23 +19,20 @@ class EditMovieActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_movie)
+        var oldMovieName: String? = intent.getStringExtra(STRING_KEY2)
 
+        if (oldMovieName != null) {
+            edit_text.setText(oldMovieName, TextView.BufferType.EDITABLE)
+        }
 
+        button_save.setOnClickListener {
 
-        button_go_back.setOnClickListener {
-//            intent.putExtra(MovieListActivity.STRING_KEY, movieName)
-//            setResult(Activity.RESULT_OK, intent)
-
-
-            if (intent.getStringExtra(STRING_KEY2) != null) {
-                var textViewID: Int = intent.getIntExtra(STRING_KEY, 11)
-                var oldMoveName: String = intent.getStringExtra(STRING_KEY2) ?: "NoData"
-                edit_text.hint = oldMoveName
+            if (oldMovieName != null) {
+                var textViewID: Int = intent.getIntExtra(INT_KEY, INT_TO_DEFAULT)
                 var intent = Intent(this, MovieListActivity::class.java)
-                intent.putExtra(STRING_KEY, textViewID)
-                intent.putExtra(STRING_KEY2, oldMoveName)
+                intent.putExtra(INT_KEY, textViewID)
+                intent.putExtra(STRING_KEY2, edit_text.text.toString())
                 setResult(Activity.RESULT_OK, intent)
-
                 Log.i("FindMe", "Found 1")
             } else {
                 var movieName = edit_text.text.toString()
