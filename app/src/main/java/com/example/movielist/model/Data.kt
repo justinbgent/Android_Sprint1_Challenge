@@ -5,7 +5,7 @@ import java.io.Serializable
 class Values {
 
     companion object {
-        var counter = 11
+        var onlyOnce = true
         var watched = false
         var movieList = mutableListOf<Data>()
         var isFlagged = arrayListOf<Boolean>()
@@ -15,6 +15,7 @@ class Values {
         const val TITLE_REQUEST_KEY = 3
         const val EDIT_TEXT_KEY = 1
         const val INT_TO_DEFAULT = -1
+        const val NO_VALUES = 0
     }
 
 }

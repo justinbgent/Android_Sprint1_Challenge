@@ -12,9 +12,9 @@ import com.example.movielist.model.Data
 import com.example.movielist.model.Values
 import com.example.movielist.model.Values.Companion.INT_KEY
 import com.example.movielist.model.Values.Companion.INT_TO_DEFAULT
+import com.example.movielist.model.Values.Companion.NO_VALUES
 import com.example.movielist.model.Values.Companion.STRING_KEY
 import com.example.movielist.model.Values.Companion.STRING_KEY2
-import com.example.movielist.model.Values.Companion.counter
 import com.example.movielist.model.Values.Companion.isFlagged
 import com.example.movielist.model.Values.Companion.movieList
 import com.example.movielist.model.Values.Companion.watched
@@ -29,40 +29,34 @@ class EditMovieActivity : AppCompatActivity() {
         var textViewID: Int = intent.getIntExtra(INT_KEY, INT_TO_DEFAULT)
 
         if (oldMovieName != null) {
+//Starting EditText with movie clicked
             edit_text.setText(oldMovieName, TextView.BufferType.EDITABLE)
         }
 
         button_save.setOnClickListener {
-
             if (oldMovieName != null) {
+//Editing a movie
                 var intent = Intent(this, MovieListActivity::class.java)
-                movieList[counter] = Data(edit_text.text.toString())
+                movieList[textViewID] = Data(edit_text.text.toString())
                 MovieListAdapter(movieList).notifyDataSetChanged()
-                //counter--
-//                intent.putExtra(INT_KEY, textViewID)
-//                intent.putExtra(STRING_KEY2, edit_text.text.toString())
-//                setResult(Activity.RESULT_OK, intent)
-//                Log.i("FindMe", "Found 1")
                 startActivity(intent)
             } else {
-//
+//Adding a movie
                 var intent = Intent(this, MovieListActivity::class.java)
-                Values.movieList.add(++counter, Data(edit_text.text.toString()))
+                Values.movieList.add(movieList.size, Data(edit_text.text.toString()))
                 MovieListAdapter(movieList).notifyDataSetChanged()
                 startActivity(intent)
             }
-
         }
 
         button_remove.setOnClickListener {
+//Removing a movie
             Log.i("FindMe", "Found button")
             var intent = Intent(this, MovieListActivity::class.java)
-//            intent.putExtra(INT_KEY, textViewID)
-//            setResult(Activity.RESULT_OK, intent)
-//            finish()
-
-            Values.movieList.removeAt(textViewID)
-            counter--
+            //if movieList holds no values, won't try to remove a value
+            if (movieList.size != NO_VALUES) {
+                Values.movieList.removeAt(textViewID)
+            }
             MovieListAdapter(movieList).notifyDataSetChanged()
             startActivity(intent)
         }

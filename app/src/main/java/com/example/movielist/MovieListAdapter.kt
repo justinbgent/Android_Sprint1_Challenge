@@ -16,6 +16,7 @@ class MovieListAdapter(private val data: MutableList<Data>): RecyclerView.Adapte
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val viewGroup = LayoutInflater.from(parent.context).inflate(R.layout.movie_item_layout, parent, false)
         return ViewHolder(viewGroup)
+
     }
 
     override fun getItemCount(): Int {
@@ -24,7 +25,7 @@ class MovieListAdapter(private val data: MutableList<Data>): RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.movie.text = data[position].movieTitle
-        holder.movie.id = Values.counter
+        holder.movie.id = position
         holder.movie.setOnClickListener{
             var intent = Intent(holder.movie.context, EditMovieActivity::class.java)
             intent.putExtra(Values.INT_KEY, holder.movie.id)
