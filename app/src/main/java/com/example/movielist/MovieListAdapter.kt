@@ -24,6 +24,7 @@ class MovieListAdapter(private val data: MutableList<Data>): RecyclerView.Adapte
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.movie.text = data[position].movieTitle
+        holder.movie.id = Values.counter
         holder.movie.setOnClickListener{
             var intent = Intent(holder.movie.context, EditMovieActivity::class.java)
             intent.putExtra(Values.INT_KEY, holder.movie.id)

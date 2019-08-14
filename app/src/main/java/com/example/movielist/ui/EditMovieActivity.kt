@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import com.example.movielist.MovieListAdapter
 import com.example.movielist.R
 import com.example.movielist.model.Data
 import com.example.movielist.model.Values
@@ -13,7 +14,9 @@ import com.example.movielist.model.Values.Companion.INT_KEY
 import com.example.movielist.model.Values.Companion.INT_TO_DEFAULT
 import com.example.movielist.model.Values.Companion.STRING_KEY
 import com.example.movielist.model.Values.Companion.STRING_KEY2
+import com.example.movielist.model.Values.Companion.counter
 import com.example.movielist.model.Values.Companion.isFlagged
+import com.example.movielist.model.Values.Companion.movieList
 import com.example.movielist.model.Values.Companion.watched
 import kotlinx.android.synthetic.main.activity_edit_movie.*
 
@@ -33,20 +36,19 @@ class EditMovieActivity : AppCompatActivity() {
 
             if (oldMovieName != null) {
                 var intent = Intent(this, MovieListActivity::class.java)
-                Values.movieList[textViewID] = Data(oldMovieName)
+                movieList[counter] = Data(edit_text.text.toString())
+                MovieListAdapter(movieList).notifyDataSetChanged()
+                //counter--
 //                intent.putExtra(INT_KEY, textViewID)
 //                intent.putExtra(STRING_KEY2, edit_text.text.toString())
 //                setResult(Activity.RESULT_OK, intent)
 //                Log.i("FindMe", "Found 1")
                 startActivity(intent)
             } else {
-//                var movieName = edit_text.text.toString()
+//
                 var intent = Intent(this, MovieListActivity::class.java)
-                Values.movieList.add(Data(edit_text.text.toString()))
-//                intent.putExtra(STRING_KEY, movieName)
-//                intent.putExtra(INT_KEY, textViewID)
-//                setResult(Activity.RESULT_OK, intent)
-//                Log.i("FindMe", "Found 2")
+                Values.movieList.add(++counter, Data(edit_text.text.toString()))
+                MovieListAdapter(movieList).notifyDataSetChanged()
                 startActivity(intent)
             }
 
@@ -60,6 +62,8 @@ class EditMovieActivity : AppCompatActivity() {
 //            finish()
 
             Values.movieList.removeAt(textViewID)
+            counter--
+            MovieListAdapter(movieList).notifyDataSetChanged()
             startActivity(intent)
         }
 
