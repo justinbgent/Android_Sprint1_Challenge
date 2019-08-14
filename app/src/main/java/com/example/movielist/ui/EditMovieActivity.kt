@@ -7,6 +7,8 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
 import com.example.movielist.R
+import com.example.movielist.model.Data
+import com.example.movielist.model.Values
 import com.example.movielist.model.Values.Companion.INT_KEY
 import com.example.movielist.model.Values.Companion.INT_TO_DEFAULT
 import com.example.movielist.model.Values.Companion.STRING_KEY
@@ -31,27 +33,34 @@ class EditMovieActivity : AppCompatActivity() {
 
             if (oldMovieName != null) {
                 var intent = Intent(this, MovieListActivity::class.java)
-                intent.putExtra(INT_KEY, textViewID)
-                intent.putExtra(STRING_KEY2, edit_text.text.toString())
-                setResult(Activity.RESULT_OK, intent)
-                Log.i("FindMe", "Found 1")
+                Values.movieList[textViewID] = Data(oldMovieName)
+//                intent.putExtra(INT_KEY, textViewID)
+//                intent.putExtra(STRING_KEY2, edit_text.text.toString())
+//                setResult(Activity.RESULT_OK, intent)
+//                Log.i("FindMe", "Found 1")
+                startActivity(intent)
             } else {
-                var movieName = edit_text.text.toString()
+//                var movieName = edit_text.text.toString()
                 var intent = Intent(this, MovieListActivity::class.java)
-                intent.putExtra(STRING_KEY, movieName)
-                intent.putExtra(INT_KEY, textViewID)
-                setResult(Activity.RESULT_OK, intent)
-                Log.i("FindMe", "Found 2")
+                Values.movieList.add(Data(edit_text.text.toString()))
+//                intent.putExtra(STRING_KEY, movieName)
+//                intent.putExtra(INT_KEY, textViewID)
+//                setResult(Activity.RESULT_OK, intent)
+//                Log.i("FindMe", "Found 2")
+                startActivity(intent)
             }
-            finish()
+
         }
 
         button_remove.setOnClickListener {
             Log.i("FindMe", "Found button")
             var intent = Intent(this, MovieListActivity::class.java)
-            intent.putExtra(INT_KEY, textViewID)
-            setResult(Activity.RESULT_OK, intent)
-            finish()
+//            intent.putExtra(INT_KEY, textViewID)
+//            setResult(Activity.RESULT_OK, intent)
+//            finish()
+
+            Values.movieList.removeAt(textViewID)
+            startActivity(intent)
         }
 
         toggle_watched.setOnCheckedChangeListener { _, isChecked ->
